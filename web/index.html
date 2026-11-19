@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>旅行者一号 · 轨迹</title>
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <main class="stage">
+      <canvas id="space"></canvas>
+      <div id="labels" class="labels"></div>
+
+      <header class="title-card">
+        <div class="title-row">
+          <h1>旅行者一号</h1>
+          <span class="en">Voyager 1</span>
+        </div>
+        <div class="status"><i id="statusDot"></i><span id="statusText">加载中…</span></div>
+      </header>
+
+      <div class="view-switch seg" id="viewSeg">
+        <button data-view="system" class="on">全景</button>
+        <button data-view="inner">内太阳系</button>
+        <button data-view="follow">跟随探测器</button>
+      </div>
+
+      <div class="hint" id="hint">拖动蓝色轨迹或探测器即可改变时间 · 拖动空白处旋转视角 · 滚轮缩放</div>
+
+      <section class="timeline card">
+        <div class="tl-top">
+          <button class="icon-btn play" id="playBtn" title="播放 / 暂停（空格）">
+            <svg width="18" height="18" viewBox="0 0 24 24" id="playIco"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+          </button>
+          <div class="seg" id="rateSeg">
+            <button data-rate="1" class="on">实时</button>
+            <button data-rate="86400">1 天/秒</button>
+            <button data-rate="2592000">30 天/秒</button>
+            <button data-rate="31557600">1 年/秒</button>
+          </div>
+          <div class="tl-date tabular" id="tlDate">—</div>
+          <button class="btn btn-sm btn-primary" id="nowBtn">回到现在</button>
+        </div>
+        <div class="track" id="track">
+          <div class="track-bar">
+            <div class="seg-past" id="segPast"></div>
+            <div class="seg-pred" id="segPred"></div>
+            <div class="seg-extra" id="segExtra"></div>
+          </div>
+          <div class="ticks" id="ticks"></div>
+          <div class="now-mark" id="nowMark"><span>现在</span></div>
+          <div class="thumb" id="thumb"></div>
+          <div class="years" id="years"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="card info">
+        <div class="card-head">
+          <h2>实时位置</h2>
+          <span class="badge" id="regionBadge">—</span>
+        </div>
+        <div class="big">
+          <div class="big-label">距太阳</div>
+          <div class="big-km tabular" id="sunKm">—</div>
+          <div class="big-sub tabular" id="sunAu">—</div>
+        </div>
+        <dl class="kv tabular">
+          <dt>距地球</dt><dd id="earthDist">—</dd>
+          <dt>单程光行时</dt><dd id="lightTime">—</dd>
+          <dt>日心速度</dt><dd id="speed">—</dd>
+          <dt>相对地球</dt><dd id="radial">—</dd>
+          <dt>赤经 / 赤纬</dt><dd id="radec">—</dd>
+          <dt>黄经 / 黄纬</dt><dd id="lonlat">—</dd>
+          <dt>飞行时间</dt><dd id="elapsed">—</dd>
+        </dl>
+      </section>
+
+      <section class="card model-card">
+        <div class="card-head">
+          <h2>探测器模型</h2>
+          <span class="muted small">Blender 建模 · 可拖动旋转</span>
+        </div>
+        <div class="model-view" id="modelView"></div>
+        <div class="part-info" id="partInfo"><b>把鼠标移到部件上</b><span>查看它是做什么的</span></div>
+      </section>
+
+      <section class="card events">
+        <div class="card-head">
+          <h2>里程碑</h2>
+          <div class="seg seg-sm" id="evSeg">
+            <button data-tab="all" class="on">全部</button>
+            <button data-tab="future">预测</button>
+          </div>
+        </div>
+        <div class="predict-row" id="predictRow">
+          <label for="predictDate">预测某天的位置</label>
+          <input type="date" class="input" id="predictDate" min="1977-09-06" max="2200-12-31" />
+        </div>
+        <ul class="ev-list" id="evList"></ul>
+        <ul class="ev-list far" id="farList"></ul>
+        <p class="note" id="srcNote"></p>
+      </section>
+    </aside>
+  </div>
+  <div class="loading" id="loading"><div class="spinner"></div><span>正在加载 JPL 星历与模型…</span></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
